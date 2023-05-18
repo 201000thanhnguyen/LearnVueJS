@@ -10,24 +10,26 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="dy.css">
 </head>
 
 <body>
 
-    <div id="dy">
-        <h1>Dynamic CSS</h1>
-        <h2>ex</h2>
-        <!-- <div @click="available = !available" :class="{available: available}">
-            <span>Ryu</span>
-        </div> -->
-        <h2>ex2</h2>
-        <!-- todo : problem 1 -->
-        <button type="button" class="btn btn-primary" :click="nearby = !nearby">toggle nearby</button>
-        <button type="button" class="btn btn-primary" :click="available = !available">toggle available 1</button>
-        <div :class="compClasses">
-            <span>Ryu</span>
-        </div>
+    <div id="loop">
+        <h1>looping</h1>
+        <ul>
+            <li v-for="chaon in cha"> {{ chaon }}</li>
+        </ul>
+        <br>
+        <ul>
+            <li v-for="(nij, index) in ninja"> {{ index }} : {{ nij.nameJ }}, age {{ nij.age }}</li>
+        </ul>
+        <tamplate v-for="(nij, index) in ninja">
+            <div>{{ index }} : {{ nij.nameJ }}, age {{ nij.age }}</div>
+        </tamplate>
+        <br>
+        <tamplate v-for="nij in ninja">
+            <p v-for="(val, key) in nij">val: {{ val }}, key : {{ key }}</p>
+        </tamplate>
     </div>
     <!-- Optional JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -41,7 +43,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src="dy.js"></script>
+    <script src="loop.js"></script>
 </body>
 
 </html>
