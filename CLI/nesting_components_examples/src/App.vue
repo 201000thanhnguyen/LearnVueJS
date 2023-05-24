@@ -1,8 +1,8 @@
 <template>
   <div>
-    <header-ninja></header-ninja>
+    <header-ninja :title="title" @changeTitle1="updateTitle"></header-ninja>
     <ninjas :ninjas="outNinjas"></ninjas>
-    <footer-ninja></footer-ninja>
+    <footer-ninja :title="title"></footer-ninja>
   </div>
 </template>
 
@@ -22,7 +22,14 @@ export default {
         { name: 'Tango', specialty: 'Conditionals', show: false },
         { name: 'Kami', specialty: 'Webpack', show: false },
         { name: 'Yoshi', specialty: 'Data Diggin', show: false }
-      ]
+      ],
+      title: "aloha"
+    }
+  },
+  methods: {
+    updateTitle(content) {
+      this.title = content;
+      console.log(content);
     }
   }
 }

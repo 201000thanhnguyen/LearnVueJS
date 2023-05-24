@@ -1,14 +1,25 @@
 <template>
     <header>
-        <h2>{{ title }}</h2>
+        <h2 @click="changeTitle">{{ title }}</h2>
     </header>
 </template>
   
 <script>
 export default {
+    props: {
+      title: {
+        type: String
+      }  
+    },
     data() {
         return {
-            title: "header"
+            
+        }
+    },
+    methods: {
+        changeTitle() {
+            // this.titleData = "changed title";
+            this.$emit('changeTitle1', 'event change');
         }
     }
 }

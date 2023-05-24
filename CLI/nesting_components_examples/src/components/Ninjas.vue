@@ -5,6 +5,7 @@
                 <span>name: {{ ninja.name }}.</span> <span v-show="ninja.show">{{ ninja.specialty }}</span>
             </li>
         </ul>
+        <button type="button" class="btn btn-primary" @click="deleteNinja">delete ninja</button>
     </div>
 </template>
 
@@ -24,6 +25,9 @@ export default {
     methods: {
         test() {
             console.log(this.ninjas);
+        },
+        deleteNinja() {
+            this.$props.ninjas.pop();
         }
     }
 }
