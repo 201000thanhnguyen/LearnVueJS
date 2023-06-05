@@ -4,6 +4,10 @@
       <!-- <add-blog></add-blog> -->
       <!-- <show-blogs></show-blogs>
       <list-blogs></list-blogs> -->
+      <ul>
+        <li><router-link to="/add-blog" exact>add-blog</router-link></li>
+        <li><router-link to="/list-blogs" exact>list-blogs</router-link></li>
+      </ul>
       <router-view></router-view>
     </div>
   </div>

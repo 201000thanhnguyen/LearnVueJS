@@ -1,0 +1,3 @@
+rootProject.name = 'demo2'
+org.gradle.jvmargs=-Xmx1024m
+org.gradle.deamon=true;

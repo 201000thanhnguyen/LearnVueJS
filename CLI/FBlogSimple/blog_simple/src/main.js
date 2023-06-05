@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueResource from 'vue-resource'
 import VueRouter from 'vue-router'
-// import Routes from './routes'
+import Routes from './routes'
 
 import ShowBlogs from './components/ShowBlogs.vue'
 import AddBlog from './components/AddBlog.vue'
@@ -12,11 +12,7 @@ Vue.use(VueResource);
 Vue.use(VueRouter);
 
 const router = new VueRouter({
-  routes: [
-    {path: '/', component: ShowBlogs},
-    {path: '/add-blog', component: AddBlog},
-    {path: '/list-blogs', component: ListBlogs}
-]
+  routes: Routes
 });
 
 
