@@ -23,6 +23,9 @@
                                     <textarea class="form-control" id="note-content" rows="3"
                                         v-model="note.content"></textarea>
                                 </div>
+                                <div class="invalid-feedback" :class="{ 'd-block': errors.content }">
+                                    {{ errors.content }}
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="note-created-date">Created Date</label>
@@ -30,14 +33,17 @@
                                     <input type="date" class="form-control" id="note-created-date"
                                         v-model="note.createdDate">
                                 </div>
+                                <div class="invalid-feedback" :class="{ 'd-block': errors.createdDate }">
+                                    {{ errors.createdDate }}
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="note-tag">Tag</label>
                                 <div>
                                     <div class="form-check form-check-inline" v-for="tagOption in tagOptions"
                                         :key="tagOption">
-                                        <input class="form-check-input" type="checkbox" :id="tagOption"
-                                            v-model="note.tag" :value="tagOption">
+                                        <input class="form-check-input" type="checkbox" :id="tagOption" v-model="note.tag"
+                                            :value="tagOption">
                                         <label class="form-check-label" :for="tagOption">{{ tagOption }}</label>
                                     </div>
                                 </div>
@@ -64,27 +70,60 @@ export default {
             note: {
                 title: '',
                 content: '',
-                createdDate: '',
+                createdDate: new Date().toISOString().slice(0, 10),
+                tag: []
+            },
+            noteDefault: {
+                title: '',
+                content: '',
+                createdDate: new Date().toISOString().slice(0, 10),
                 tag: []
             },
             tagOptions: [
                 "tag1", "tag2", "tag3"
             ],
             modalVisible: false,
+            errors: {}
         }
     },
     watch: {
         visible(value) {
             this.modalVisible = value;
-        }
+        },
     },
     methods: {
         closeModal() {
             this.$emit("changeValVisible");
         },
         sendObjNote() {
-            console.log(this.$data.note);
+            if (this.isValData() > 0) {
+                console.log(1);
+            } else {
+                this.$emit("changeValVisible", this.note);
+                this.note = this.noteDefault;
+            }
+        },
+        isValData() {
+            this.errors = {};
+
+            if (!this.note.content) {
+                this.errors.content = 'Vui lòng nhập nội dung';
+            }
+
+            if (!this.note.createdDate) {
+                this.errors.createdDate = 'Ngày tạo là bắt buộc';
+            }
+
+            if (Object.keys(this.errors).length > 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+
         }
+    },
+    created() {
+        this.note.createdDate = new Date().toISOString().slice(0, 10);
     }
 };
 </script>

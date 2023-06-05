@@ -1,41 +1,42 @@
 <template>
     <div class="container">
-        <h1 class="text-center my-5">Danh sách Note</h1>
+        <h1 class="text-center my-4">List Note</h1>
         <div class="card">
             <div class="card-header">
                 <button class="btn btn-primary btn-sm" @click="showModal">Add Note</button>
                 <ModalCreateNote :visible="isModalVisible" @changeValVisible="setValVisible"></ModalCreateNote>
             </div>
-            <div class="card">
+            <div class="card-body">
 
                 <body>
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Tiêu đề</th>
-                                <th scope="col">Nội dung</th>
-                                <th scope="col">Ngày tạo</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Content</th>
+                                <th scope="col">Create Date</th>
                                 <!-- <th scope="col">Thẻ</th> -->
-                                <th scope="col">Hành động</th> <!-- Thêm cột Hành động -->
+                                <th scope="col">Actions</th> <!-- Thêm cột Hành động -->
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(note, index) in notes" :key="index">
                                 <th scope="row">{{ index + 1 }}</th>
                                 <td>{{ note.title }}</td>
-                                <td>{{ note.content }}</td>
+                                <td>{{ formatContent(note.content) }}</td>
                                 <td>{{ formatDate(note.createdDate) }}</td>
                                 <!-- <td>{{ note.tag }}</td> -->
                                 <td class="dropdown">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Thao tác
+                                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Action
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <button class="dropdown-item" @click="viewDetail(note)">Chi tiết</button>
-                                        <button class="dropdown-item" @click="edit(note)">Sửa</button>
-                                        <button class="dropdown-item" @click="deleteNote(index)">Xóa</button>
+                                        <button class="dropdown-item btn-sm" @click="viewDetail(note)">Detail</button>
+                                        <button class="dropdown-item btn-sm" @click="edit(note)">Update</button>
+                                        <button class="dropdown-item btn-sm" @click="deleteNote(index)">Delete</button>
                                     </div>
                                 </td>
                             </tr>
@@ -64,9 +65,8 @@ export default {
         };
     },
     methods: {
-        formatDate(date) {
-            const d = new Date(date);
-            return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+        showModal() {
+            this.isModalVisible = true;
         },
         viewDetail(note) {
             // Xử lý khi bấm nút Chi tiết
@@ -77,21 +77,35 @@ export default {
         deleteNote(index) {
             // Xử lý khi bấm nút Xóa
         },
-        setValVisible() {
+        setValVisible(objNote) {
             this.isModalVisible = false;
+            objNote.tag = objNote.tag.join(" ");
+            this.$http.post('http://localhost:8081/v1/note/add', objNote).then(function (res) {
+                // console.log(res);
+                this.$http.get('http://localhost:8081/v1/note').then((data) => {
+                    this.notes = data.body.slice(0, 10);
+                });
+            });
         },
-        showModal() {
-            this.isModalVisible = true;
+        formatDate(date) {
+            const d = new Date(date);
+            return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
         },
+        formatContent(content) {
+            if (content.length > 100) {
+                return content.slice(0, 80) + '...';
+            }
+            return content;
+        },
+    },
+    mounted() {
+
     },
     created() {
         this.$http.get('http://localhost:8081/v1/note').then((data) => {
             this.notes = data.body.slice(0, 10);
             console.log(data);
         });
-    },
-    computed: {
-
     }
 };
 </script>

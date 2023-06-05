@@ -6,9 +6,9 @@ import com.example.demo3.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +37,16 @@ public class NoteController {
                     note.getTag()
             )).collect(Collectors.toList());
             return new ResponseEntity<>(noteDTOS, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<NoteDTO> addNote(@Validated @RequestBody Note note, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }else {
+            this.noteService.addOrUpdateNote(note);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 }

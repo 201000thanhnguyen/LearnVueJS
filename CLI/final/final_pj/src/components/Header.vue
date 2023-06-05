@@ -10,23 +10,22 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <router-link to="/" class="nav-link" active-class="active" exact>Trang chủ</router-link>
+                        <router-link to="/" class="nav-link" active-class="active" exact>Home</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/about" class="nav-link" active-class="active">Giới thiệu</router-link>
+                        <router-link to="/about" class="nav-link" active-class="active">About</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/contact" class="nav-link" active-class="active">Liên hệ</router-link>
+                        <router-link to="/contact" class="nav-link" active-class="active">Contact</router-link>
                     </li>
                 </ul>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <router-link to="/register" class="nav-link" active-class="active">Đăng
-                            ký</router-link>
+                        <router-link to="/register" class="nav-link" active-class="active">Register</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/login" class="nav-link btn btn-primary" active-class="active">Đăng nhập</router-link>
+                        <router-link to="/login" class="nav-link btn btn-primary text-white" active-class="active">Login</router-link>
                     </li>
                 </ul>
             </div>

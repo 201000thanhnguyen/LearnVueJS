@@ -11,7 +11,8 @@
                                     <label for="email">Email</label>
                                     <input type="email" id="email" v-model="email" :class="{ 'is-invalid': errors.email }"
                                         class="form-control" required>
-                                    <div class="invalid-feedback">{{ errors.email }}</div>
+                                    <!-- <div class="invalid-feedback">{{ errors.email }}</div> -->
+                                    <small id="emailHelp" class="form-text text-danger">{{ errors.email }}</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Mật khẩu</label>
