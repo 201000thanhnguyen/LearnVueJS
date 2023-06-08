@@ -6,7 +6,7 @@ import UpdateNote from './components/UpdateNote.vue'
 
 
 export default [
-    {path: '/', component: ListNote},
+    {path: '/', component: ListNote, meta: {requiresAuth: true}},
     {path: '/list-note', component: ListNote, meta: {requiresAuth: true}},
     {path: '/login', component: Login},
     {path: '/register', component: Register},

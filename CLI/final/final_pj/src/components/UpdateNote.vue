@@ -7,25 +7,26 @@
                     <form>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationServer01">First name</label>
-                                <input type="text" class="form-control is-valid" id="validationServer01" required
-                                    v-model="note.title">
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
+                                <label for="note-title">Title</label>
+                                <input type="text" class="form-control" id="note-title" required v-model="note.title">
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label for="validationTextarea">Textarea</label>
-                                <textarea class="form-control is-invalid" id="validationTextarea"
-                                    placeholder="Required example textarea" rows="3" required v-model="note.content"></textarea>
-                                <div class="invalid-feedback">
-                                    Please enter a message in the textarea.
+                                <label for="note-content">Content</label>
+                                <textarea class="form-control" :class="{ 'is-invalid': errors.content }" id="note-content"
+                                    placeholder="Required example textarea" rows="3" required
+                                    v-model="note.content"></textarea>
+                                <div class="invalid-feedback" :class="{ 'd-block': errors.content }">
+                                    {{ errors.content }}
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="note-created-date">Created Date</label>
                                 <div class="input-group">
-                                    <input type="date" class="form-control" id="note-created-date" v-model="note.createdDate">
+                                    <input type="date" class="form-control" :class="{ 'is-invalid': errors.createdDate }"
+                                        id="note-created-date" v-model="note.createdDate" required="false">
+                                </div>
+                                <div class="invalid-feedback" :class="{ 'd-block': errors.createdDate }">
+                                    {{ errors.createdDate }}
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -40,7 +41,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-primary btn-block" type="submit">Submit form</button>
+                        <button class="btn btn-primary btn-block" type="button" @click.prevent="sendObjNote">Submit</button>
                     </form>
                 </div>
             </div>
@@ -49,28 +50,43 @@
 </template>
 
 <script>
+import ValidInputNote from '../mixin/ValidInputNote';
 export default {
     data() {
         return {
-            note: {
-                title: '',
-                content: '',
-                createdDate: '',
-                tag: []
-            },
+            note: {},
             tagOptions: [
                 "tag1", "tag2", "tag3"
             ],
+            errors: {}
         }
     },
     computed: {
 
     },
     watch: {
-        
+
     },
     methods: {
+        sendObjNote() {
+            if (this.isValData() > 0) {
+                console.log(this.note);
+            } else {
+                this.note.tag = this.note.tag.join(" ");
+                this.$http.put(`http://localhost:8081/v1/note/update-note`, this.note).then((res) => {
+                    if (res.status == 200) {
+                        this.note.tag = this.note.tag.split(" ");
+                        if (confirm("tiếp tục chỉnh sửa: ")) {
 
+                        } else {
+                            this.$router.push('/');
+                        }
+                    } else {
+                        this.note.tag = this.note.tag.split(" ");
+                    }
+                });
+            }
+        }
     },
     created() {
         let noteId = this.$route.params.id
@@ -80,7 +96,7 @@ export default {
             console.log(this.note);
         })
     },
-    
+    mixins: [ValidInputNote]
 };
 </script>
 

@@ -11,43 +11,46 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label for="note-title">Title</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="note-title" v-model="note.title" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="note-content">Content</label>
-                                <div class="input-group">
-                                    <textarea class="form-control" id="note-content" rows="3"
-                                        v-model="note.content"></textarea>
-                                </div>
-                                <div class="invalid-feedback" :class="{ 'd-block': errors.content }">
-                                    {{ errors.content }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="note-created-date">Created Date</label>
-                                <div class="input-group">
-                                    <input type="date" class="form-control" id="note-created-date"
-                                        v-model="note.createdDate">
-                                </div>
-                                <div class="invalid-feedback" :class="{ 'd-block': errors.createdDate }">
-                                    {{ errors.createdDate }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="note-tag">Tag</label>
-                                <div>
-                                    <div class="form-check form-check-inline" v-for="tagOption in tagOptions"
-                                        :key="tagOption">
-                                        <input class="form-check-input" type="checkbox" :id="tagOption" v-model="note.tag"
-                                            :value="tagOption">
-                                        <label class="form-check-label" :for="tagOption">{{ tagOption }}</label>
+                            <form>
+                                <div class="form-group">
+                                    <label for="note-title">Title</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="note-title" v-model="note.title"
+                                            required>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="form-group">
+                                    <label for="note-content">Content</label>
+                                    <div class="input-group">
+                                        <textarea class="form-control" id="note-content" rows="3"
+                                            v-model="note.content"></textarea>
+                                    </div>
+                                    <div class="invalid-feedback" :class="{ 'd-block': errors.content }">
+                                        {{ errors.content }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="note-created-date">Created Date</label>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control" id="note-created-date"
+                                            v-model="note.createdDate">
+                                    </div>
+                                    <div class="invalid-feedback" :class="{ 'd-block': errors.createdDate }">
+                                        {{ errors.createdDate }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="note-tag">Tag</label>
+                                    <div>
+                                        <div class="form-check form-check-inline" v-for="tagOption in tagOptions"
+                                            :key="tagOption">
+                                            <input class="form-check-input" type="checkbox" :id="tagOption"
+                                                v-model="note.tag" :value="tagOption">
+                                            <label class="form-check-label" :for="tagOption">{{ tagOption }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" @click="sendObjNote">Save</button>
@@ -63,6 +66,7 @@
 </template>
 
 <script>
+import ValidInputNote from '../mixin/ValidInputNote';
 export default {
     props: ['visible'],
     data() {
@@ -102,29 +106,12 @@ export default {
                 this.$emit("changeValVisible", this.note);
                 this.note = this.noteDefault;
             }
-        },
-        isValData() {
-            this.errors = {};
-
-            if (!this.note.content) {
-                this.errors.content = 'Vui lòng nhập nội dung';
-            }
-
-            if (!this.note.createdDate) {
-                this.errors.createdDate = 'Ngày tạo là bắt buộc';
-            }
-
-            if (Object.keys(this.errors).length > 0) {
-                return 1;
-            } else {
-                return 0;
-            }
-
         }
     },
     created() {
         this.note.createdDate = new Date().toISOString().slice(0, 10);
-    }
+    },
+    mixins: [ValidInputNote]
 };
 </script>
 
