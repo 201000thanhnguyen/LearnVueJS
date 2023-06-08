@@ -1,10 +1,11 @@
 <template>
     <footer>
-        <p>copyright by {{ authorNinja }} {{ title }}</p>
+        <p>copyright by {{ authorNinja }} {{ titleData }}</p>
     </footer>
 </template>
 
 <script>
+import { bus } from '../main';
 export default {
     props: {
         title: {
@@ -13,8 +14,15 @@ export default {
     },
     data() {
         return {
-            authorNinja: "ThanhNHM"
+            authorNinja: "ThanhNHM",
+            titleData: this.title
+            
         }
+    },
+    created() {
+        bus.$on('changeTitle1', (data) => {
+            this.titleData  = data;
+        });
     }
 }
 </script>

@@ -41,6 +41,10 @@ export default {
     },
     methods: {
         login() {
+            localStorage.setItem('isNotAuthenticated', true);
+            console.log("set isNotAuthenticated");
+            this.$router.push(`/list-note`);
+
             this.errors = {};
 
             if (!this.email) {

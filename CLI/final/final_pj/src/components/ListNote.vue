@@ -4,7 +4,7 @@
         <div class="card">
             <div class="card-header">
                 <button class="btn btn-primary btn-sm" @click="showModal">Add Note</button>
-                <ModalCreateNote :visible="isModalVisible" @changeValVisible="setValVisible"></ModalCreateNote>
+                <modal-create-note :visible="isModalVisible" @changeValVisible="setValVisible"></modal-create-note>
             </div>
             <div class="card-body">
 
@@ -35,7 +35,7 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <button class="dropdown-item btn-sm" @click="viewDetail(note)">Detail</button>
-                                        <button class="dropdown-item btn-sm" @click="edit(note)">Update</button>
+                                        <router-link :to="`/update-note/${note.noteId}`"><button class="dropdown-item btn-sm" @click.prevent="edit(note.noteId)">Update</button></router-link>
                                         <button class="dropdown-item btn-sm" @click="deleteNote(index)">Delete</button>
                                     </div>
                                 </td>
@@ -57,9 +57,9 @@ export default {
     data() {
         return {
             notes: [
-                { title: 'Note 1', content: 'Nội dung note 1', createdDate: '2023-06-01', tag: 'tag 1' },
-                { title: 'Note 2', content: 'Nội dung note 2', createdDate: '2023-06-02', tag: 'tag 2' },
-                { title: 'Note 3', content: 'Nội dung note 3', createdDate: '2023-06-03', tag: 'tag 3' },
+                { noteId: 0, title: 'Note 1', content: 'Nội dung note 1', createdDate: '2023-06-01', tag: 'tag 1' },
+                { noteId: 1, title: 'Note 2', content: 'Nội dung note 2', createdDate: '2023-06-02', tag: 'tag 2' },
+                { noteId: 2, title: 'Note 3', content: 'Nội dung note 3', createdDate: '2023-06-03', tag: 'tag 3' },
             ],
             isModalVisible: false,
         };
@@ -71,21 +71,29 @@ export default {
         viewDetail(note) {
             // Xử lý khi bấm nút Chi tiết
         },
-        edit(note) {
+        edit(noteId) {
             // Xử lý khi bấm nút Sửa
+            this.$http.get(`http://localhost:8081/v1/note/get-note/${noteId}`).then((res) => {
+                console.log(res.status);
+                if(res.status == 200) {
+                    this.$router.push(`/update-note/${noteId}`);
+                }
+            });
         },
         deleteNote(index) {
             // Xử lý khi bấm nút Xóa
         },
         setValVisible(objNote) {
             this.isModalVisible = false;
-            objNote.tag = objNote.tag.join(" ");
-            this.$http.post('http://localhost:8081/v1/note/add', objNote).then(function (res) {
-                // console.log(res);
-                this.$http.get('http://localhost:8081/v1/note').then((data) => {
-                    this.notes = data.body.slice(0, 10);
+            if (typeof objNote !== 'undefined') {
+                objNote.tag = objNote.tag.join(" ");
+                this.$http.post('http://localhost:8081/v1/note/add', objNote).then(function (res) {
+                    // console.log(res);
+                    this.$http.get('http://localhost:8081/v1/note').then((data) => {
+                        this.notes = data.body.slice(0, 10);
+                    });
                 });
-            });
+            }
         },
         formatDate(date) {
             const d = new Date(date);
@@ -104,7 +112,6 @@ export default {
     created() {
         this.$http.get('http://localhost:8081/v1/note').then((data) => {
             this.notes = data.body.slice(0, 10);
-            console.log(data);
         });
     }
 };
