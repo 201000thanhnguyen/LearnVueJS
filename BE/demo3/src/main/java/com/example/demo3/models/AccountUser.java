@@ -5,7 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Account {
+public class AccountUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int accId;
@@ -17,5 +17,5 @@ public class Account {
     private String accEmail;
     @NotBlank
     private String accPass;
-    private String statusLogin;
+    private String statusLogin; // value : true / false
 }

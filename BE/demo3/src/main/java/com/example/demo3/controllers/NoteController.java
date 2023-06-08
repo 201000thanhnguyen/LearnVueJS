@@ -42,7 +42,28 @@ public class NoteController {
 
     @PostMapping("/add")
     public ResponseEntity<NoteDTO> addNote(@Validated @RequestBody Note note, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()){
+        if (bindingResult.hasFieldErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            this.noteService.addOrUpdateNote(note);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+    }
+
+    @GetMapping("/get-note/{id}")
+    public ResponseEntity<NoteDTO> getNote(@PathVariable int id) {
+        Note note = this.noteService.findByIdInt(id);
+        if (note == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }else {
+            NoteDTO noteDTO = new NoteDTO(note.getNoteId(), note.getTitle(), note.getContent(), note.getCreatedDate(), note.getTag());
+            return new ResponseEntity<>(noteDTO, HttpStatus.OK);
+        }
+    }
+
+    @PutMapping("/update-note")
+    public ResponseEntity<NoteDTO> updateNote(@Validated @RequestBody Note note, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }else {
             this.noteService.addOrUpdateNote(note);
