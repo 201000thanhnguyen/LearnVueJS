@@ -31,6 +31,7 @@
 </template>
   
 <script>
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
@@ -39,12 +40,11 @@ export default {
             errors: {},
         };
     },
+    computed: {
+        ...mapGetters(['serverLoginPass'])
+    },
     methods: {
         login() {
-            localStorage.setItem('isNotAuthenticated', true);
-            console.log("set isNotAuthenticated");
-            this.$router.push(`/list-note`);
-
             this.errors = {};
 
             if (!this.email) {
@@ -61,7 +61,16 @@ export default {
 
             if (Object.keys(this.errors).length === 0) {
                 // Thực hiện đăng nhập
-                console.log('Đăng nhập với email:', this.email, ', mật khẩu:', this.password);
+                let objLogin = {"accEmail": this.email, "accPass": this.password};
+                this.$http.post('http://localhost:8081/v1/acc-user/login', objLogin).then((res) => {
+                    console.log(res);
+                    if (res.status == 200) {
+                        this.$store.commit('updateServerLoginPass', true);
+                        this.$store.commit('setInfoAcc', res.body);
+                        this.$router.push('/');
+                    }
+                });
+                // this.$router.push(`/list-note`);
             }
         },
         validEmail(email) {

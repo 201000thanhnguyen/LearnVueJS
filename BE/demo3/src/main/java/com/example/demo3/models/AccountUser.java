@@ -1,10 +1,13 @@
 package com.example.demo3.models;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Entity
+@Data
 public class AccountUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
